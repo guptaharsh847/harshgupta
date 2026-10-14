@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { preload } from "react-dom";
 import { PROFILE } from "@/lib/data";
 import { prefersReducedMotion } from "@/lib/hooks";
+import { asset } from "@/lib/asset";
 import { scrollToTarget } from "@/lib/scroll";
 
 const css = `
@@ -17,7 +18,7 @@ const css = `
   mask-image: linear-gradient(90deg, #000 calc(50% - var(--hole) - 40px), transparent calc(50% - var(--hole)), transparent calc(50% + var(--hole)), #000 calc(50% + var(--hole) + 40px)); }
 .hero-ghost { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%);
   display: flex; font-weight: 800; font-size: clamp(120px, 27vw, 460px); line-height: .8; letter-spacing: -0.06em;
-  color: transparent; -webkit-text-stroke: 1.5px rgba(13,13,13,.16); white-space: nowrap; user-select: none; pointer-events: none; }
+  color: transparent; -webkit-text-stroke: 1.5px rgba(138,28,43,.2); white-space: nowrap; user-select: none; pointer-events: none; }
 .hero-ghost span { display: inline-block; animation: ghost-in 1.6s var(--ease) both; animation-delay: calc(var(--i) * 70ms + 150ms); }
 @keyframes ghost-in { from { opacity: 0; transform: translateY(18%); } to { opacity: 1; transform: none; } }
 
@@ -36,8 +37,13 @@ const css = `
 .hero-title h1 { font-weight: 700; letter-spacing: -0.045em; line-height: .96; font-size: clamp(40px, 5vw, 84px); }
 .hero-kicker { font: 500 12px/1.4 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--mute);
   margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-.hero-kicker::before { content: ""; width: 8px; height: 8px; border-radius: 99px; background: var(--ink);
-  box-shadow: 0 0 0 4px rgba(13,13,13,.08); }
+.hero-kicker::before { content: ""; width: 8px; height: 8px; border-radius: 99px; background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft); animation: kick-pulse 2.4s var(--ease) infinite; }
+@keyframes kick-pulse { 0%,100% { box-shadow: 0 0 0 4px var(--accent-soft); } 50% { box-shadow: 0 0 0 8px rgba(138,28,43,0); } }
+.hero-side p b { color: var(--ink); font-weight: 600; }
+.hero-domains { display: flex; flex-wrap: wrap; gap: 6px; }
+.hero-domains li { font: 500 11px/1 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--accent);
+  background: var(--accent-soft); padding: 7px 10px; border-radius: 99px; }
 .hero-side { max-width: min(30%, 360px); display: grid; gap: 22px; justify-items: start; }
 .hero-side p { color: var(--ink-2); font-size: 15px; line-height: 1.55; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -51,7 +57,7 @@ const css = `
 .hero-sound:hover { transform: translateY(-50%) scale(1.06); background: #262626; }
 .hero-sound svg { width: 16px; height: 16px; }
 .hero-sound.is-blocked::before, .hero-sound.is-blocked::after { content: ""; position: absolute; inset: 0; border-radius: inherit;
-  box-shadow: 0 0 0 1.5px rgba(13,13,13,.35); animation: ping 2.2s var(--ease) infinite; pointer-events: none; }
+  box-shadow: 0 0 0 1.5px rgba(138,28,43,.55); animation: ping 2.2s var(--ease) infinite; pointer-events: none; }
 .hero-sound.is-blocked::after { animation-delay: 1.1s; }
 @keyframes ping { from { transform: scale(1); opacity: 1; } to { transform: scale(1.9); opacity: 0; } }
 
@@ -95,7 +101,7 @@ function PauseIcon() {
 }
 
 export default function Hero() {
-  preload("/hero/poster.webp", { as: "image", fetchPriority: "high" });
+  preload(asset("/hero/poster.webp"), { as: "image", fetchPriority: "high" });
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const soundBtnRef = useRef<HTMLButtonElement>(null);
@@ -103,21 +109,41 @@ export default function Hero() {
   const visible = useRef(true);
   const userMuted = useRef(false);
 
-  // 1. try to start with sound, fall back to muted autoplay
+  const started = useRef(false);
+  const pendingStart = useRef<(() => void) | null>(null);
+
+  // 1. start with sound; fall back to muted autoplay only when the browser
+  //    actually refuses (NotAllowedError). An interrupted play() (AbortError:
+  //    StrictMode re-run, the observer pausing a hero that loaded scrolled away)
+  //    is retried instead of being mistaken for "blocked".
   useEffect(() => {
     const v = videoRef.current;
-    if (!v) return;
+    if (!v || started.current) return;
+    started.current = true;
     v.muted = true; // default attribute state (React does not render `muted`)
     if (prefersReducedMotion()) return; // poster only until the visitor presses play
 
-    v.muted = false;
-    v.play()
-      .then(() => setSound({ on: true, blocked: false }))
-      .catch(() => {
-        v.muted = true;
-        v.play().catch(() => {});
-        setSound({ on: false, blocked: true });
-      });
+    let attempts = 0;
+    const tryStart = () => {
+      if (userMuted.current) return;
+      if (!visible.current) {
+        pendingStart.current = tryStart; // resume when the hero is back in view
+        return;
+      }
+      v.muted = false;
+      v.play()
+        .then(() => setSound({ on: true, blocked: false }))
+        .catch((err: DOMException) => {
+          if (err?.name === "NotAllowedError") {
+            v.muted = true;
+            v.play().catch(() => {});
+            setSound({ on: false, blocked: true });
+          } else if (attempts++ < 4) {
+            setTimeout(tryStart, 200);
+          }
+        });
+    };
+    tryStart();
   }, []);
 
   // 2. unlock sound on the first gesture anywhere (except the sound button itself)
@@ -151,7 +177,11 @@ export default function Hero() {
       ([e]) => {
         visible.current = e.intersectionRatio >= 0.35;
         if (!visible.current) v.pause();
-        else if (v.paused && !(prefersReducedMotion() && v.currentTime === 0)) v.play().catch(() => {});
+        else if (pendingStart.current) {
+          const start = pendingStart.current;
+          pendingStart.current = null;
+          start();
+        } else if (v.paused && !(prefersReducedMotion() && v.currentTime === 0)) v.play().catch(() => {});
       },
       { threshold: [0, 0.35, 0.6, 1] },
     );
@@ -203,13 +233,13 @@ export default function Hero() {
             loop
             playsInline
             preload="auto"
-            poster="/hero/poster.webp"
+            poster={asset("/hero/poster.webp")}
             width={768}
             height={960}
             aria-describedby="hero-video-desc"
           >
-            <source src="/hero/hero.webm" type="video/webm" />
-            <source src="/hero/hero.mp4" type="video/mp4" />
+            <source src={asset("/hero/hero.webm")} type="video/webm" />
+            <source src={asset("/hero/hero.mp4")} type="video/mp4" />
           </video>
           <p id="hero-video-desc" className="sr-only">
             Intro video: an animated avatar of {PROFILE.name}, standing and speaking a short self-introduction.
@@ -229,7 +259,7 @@ export default function Hero() {
         <div className="hero-copy">
           <div className="hero-title">
             <p className="hero-kicker hero-in" style={{ "--i": 0 } as React.CSSProperties}>
-              {PROFILE.name}
+              {PROFILE.currentRole} · {PROFILE.currentCompany}
             </p>
             <h1 id="hero-title" className="hero-in" style={{ "--i": 1 } as React.CSSProperties}>
               Full Stack MERN <span className="accent">Developer.</span>
@@ -237,9 +267,14 @@ export default function Hero() {
           </div>
           <div className="hero-side">
             <p className="hero-in" style={{ "--i": 2 } as React.CSSProperties}>
-              {PROFILE.experienceYears} years of developing and maintaining web applications using React.js, Node.js, Express.js, and
-              MongoDB.
+              {PROFILE.experienceYears} years building web apps with React.js, Node.js, Express.js and MongoDB, including APIs
+              for a gaming platform <b>serving millions of users</b>.
             </p>
+            <ul className="hero-domains hero-in" style={{ "--i": 2.5 } as React.CSSProperties} aria-label="Domains">
+              {PROFILE.domains.map((d) => (
+                <li key={d}>{d}</li>
+              ))}
+            </ul>
             <div className="hero-ctas hero-in" style={{ "--i": 3 } as React.CSSProperties}>
               <a href="#work" className="btn btn-primary" onClick={go("work")}>
                 Explore work

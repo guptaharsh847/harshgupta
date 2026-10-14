@@ -15,20 +15,23 @@ const css = `
 @keyframes hop { 0% { transform: none; } 30% { transform: translateY(-0.16em); } 55% { transform: translateY(0.03em); } 75% { transform: translateY(-0.04em); } 100% { transform: none; } }
 
 .ct-grid { margin-top: clamp(48px, 8vh, 88px); display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 40px; align-items: end; }
+.ct-status { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; font: 500 12px/1 var(--font-mono);
+  letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+.ct-status span { width: 8px; height: 8px; border-radius: 99px; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
 .ct-email-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .ct-email { font-weight: 600; font-size: clamp(22px, 3.6vw, 52px); letter-spacing: -0.035em; line-height: 1.1; overflow-wrap: anywhere;
-  background: linear-gradient(var(--ink), var(--ink)) 0 100% / 100% 2px no-repeat; padding-bottom: 6px;
+  background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 2px no-repeat; padding-bottom: 6px;
   transition: background-size .7s var(--ease); }
 .ct-email:hover { background-size: 0% 2px; background-position: 100% 100%; }
 .ct-copy { height: 36px; padding-inline: 14px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(13,13,13,.2); font: 500 12px/1 var(--font-mono);
   letter-spacing: .04em; text-transform: uppercase; transition: background-color .4s var(--ease), color .4s var(--ease); }
-.ct-copy:hover, .ct-copy.is-done { background: var(--ink); color: #fff; }
+.ct-copy:hover, .ct-copy.is-done { background: var(--accent); color: #fff; box-shadow: none; }
 .ct-links { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px; }
 
 .ct-badge { position: relative; width: 168px; height: 168px; border-radius: 999px; display: grid; place-items: center; flex: none; }
 .ct-badge svg.ct-ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: badge-spin 18s linear infinite; }
 .ct-badge text { font: 500 13px var(--font-mono); letter-spacing: 3.2px; text-transform: uppercase; fill: var(--ink); }
-.ct-badge-core { width: 76px; height: 76px; border-radius: 999px; background: var(--ink); color: #fff; display: grid; place-items: center;
+.ct-badge-core { width: 76px; height: 76px; border-radius: 999px; background: var(--accent); color: #fff; display: grid; place-items: center;
   font-size: 26px; transition: transform .6s var(--ease); }
 .ct-badge:hover .ct-badge-core { transform: rotate(-45deg) scale(1.06); }
 @keyframes badge-spin { to { transform: rotate(360deg); } }
@@ -36,7 +39,7 @@ const css = `
 .ft { margin-top: clamp(72px, 12vh, 120px); padding-top: 22px; border-top: 1px solid var(--line); display: flex; justify-content: space-between;
   align-items: center; gap: 16px; flex-wrap: wrap; font-size: 13.5px; color: var(--mute); }
 .ft a { color: var(--ink); font-weight: 500; display: inline-flex; gap: 6px; align-items: center; }
-.ft a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.ft a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
 @media (max-width: 699px) {
   .ct-grid { grid-template-columns: minmax(0,1fr); }
   .ct-badge { width: 136px; height: 136px; justify-self: end; }
@@ -111,6 +114,10 @@ export default function Contact() {
 
         <div className="ct-grid">
           <div>
+            <p className="ct-status rv">
+              <span aria-hidden="true" />
+              Based in {PROFILE.location} · open to conversations
+            </p>
             <div className="ct-email-row rv">
               <a className="ct-email" href={`mailto:${PROFILE.email}`}>
                 {PROFILE.email}

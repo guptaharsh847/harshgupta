@@ -10,7 +10,7 @@ import Contact from "@/components/sections/Contact";
 import RevealObserver from "@/components/ui/RevealObserver";
 import { SmoothScroll } from "@/lib/scroll";
 
-/** Hero → About → Skills → Work → Certifications → Experience → Achievements → Contact */
+/** Hero → About → Skills → Work → Experience → Certifications → Achievements → Contact */
 export default function App() {
   return (
     <>
@@ -25,8 +25,8 @@ export default function App() {
         <About />
         <Skills />
         <Work />
-        <Certifications />
         <Experience />
+        <Certifications />
         <Achievements />
         <Contact />
       </main>

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { PROFILE } from "@/lib/data";
+import { asset } from "@/lib/asset";
 import "./globals.css";
 
 const interTight = localFont({
@@ -29,7 +30,8 @@ const title = `${PROFILE.name} | ${PROFILE.role}`;
 const description = PROFILE.resumeSummary.split(". ")[0] + ".";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  // trailing slash matters: relative image URLs resolve inside the /harshgupta/ folder
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://guptaharsh847.github.io/harshgupta/"),
   title,
   description,
   authors: [{ name: PROFILE.name }],
@@ -37,10 +39,10 @@ export const metadata: Metadata = {
     type: "website",
     title,
     description,
-    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: `${PROFILE.name}, ${PROFILE.role}` }],
+    images: [{ url: "og.jpg", width: 1200, height: 630, alt: `${PROFILE.name}, ${PROFILE.role}` }],
   },
-  twitter: { card: "summary_large_image", title, description, images: ["/og.jpg"] },
-  icons: { icon: "/favicon.svg" },
+  twitter: { card: "summary_large_image", title, description, images: ["og.jpg"] },
+  icons: { icon: asset("/favicon.svg") },
 };
 
 export const viewport: Viewport = {

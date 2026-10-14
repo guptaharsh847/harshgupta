@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 import { EXPERIENCE, PROJECTS, SKILL_GROUPS, type Family, type Skill } from "@/lib/data";
@@ -24,8 +24,8 @@ const css = `
   transition: opacity .7s var(--ease), transform .8s var(--ease), box-shadow .5s var(--ease), background-color .4s, color .4s; }
 .pt-grid.is-in .pt-tile { opacity: 1; transform: none; transition-delay: var(--d), var(--d), 0s, 0s, 0s; }
 .pt-tile:hover, .pt-tile:focus-visible, .pt-tile.is-current { box-shadow: var(--hair), 0 18px 34px -20px rgba(13,13,13,.45); }
-.pt-tile.is-current { background: var(--ink); color: #fff; }
-.pt-tile.is-current .pt-num, .pt-tile.is-current .pt-fam { color: rgba(255,255,255,.6); }
+.pt-tile.is-current { background: var(--accent); color: #fff; box-shadow: 0 18px 34px -18px rgba(138,28,43,.6); }
+.pt-tile.is-current .pt-num, .pt-tile.is-current .pt-fam { color: rgba(255,255,255,.78); }
 .pt-grid.is-in .pt-tile.is-dim { opacity: .22; transform: scale(.97); }
 .pt-num { font: 500 10px/1 var(--font-mono); color: var(--mute); }
 .pt-sym { margin-top: auto; font-weight: 700; font-size: clamp(22px, 2.3vw, 32px); letter-spacing: -0.04em; line-height: 1; }
@@ -105,7 +105,7 @@ export default function Skills() {
           accent="of my stack."
         >
           <p className="lede rv mt-6 max-w-[56ch]" style={{ "--i": 2 } as React.CSSProperties}>
-            Every skill listed on my rÃ©sumÃ©, as an element. Hover or focus a tile to inspect it; filter by family.
+            Every skill and tool from my résumé, as an element. Hover or focus a tile to inspect it; filter by family.
           </p>
         </SectionHead>
 
@@ -204,7 +204,7 @@ export default function Skills() {
                   ))}
                 </ul>
               ) : (
-                <p>Listed under {current.family} in my rÃ©sumÃ© skills.</p>
+                <p>Part of my {current.family.toLowerCase()} toolkit, listed in my résumé skills.</p>
               )}
             </div>
           </aside>

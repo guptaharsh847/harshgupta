@@ -1,17 +1,19 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { TIMELINE } from "@/lib/data";
 import { prefersReducedMotion, useScrollProgress } from "@/lib/hooks";
 import { scrollToTarget } from "@/lib/scroll";
+import { asset } from "@/lib/asset";
 import SectionHead from "@/components/ui/SectionHead";
+import TechLogo from "@/components/ui/TechLogo";
 
 const css = `
 @layer components {
 .tl { position: relative; margin-top: 72px; --year-w: 200px; --spine-x: calc(var(--year-w) + 28px); }
 .tl-spine, .tl-fill { position: absolute; top: 6px; bottom: 0; left: var(--spine-x); width: 2px; margin-left: -1px; border-radius: 2px; }
 .tl-spine { background: var(--line); }
-.tl-fill { background: var(--ink); transform-origin: 50% 0; transform: scaleY(0); will-change: transform; }
+.tl-fill { background: var(--accent); transform-origin: 50% 0; transform: scaleY(0); will-change: transform; }
 .tl-list { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(40px, 6vh, 64px); }
 .tl-stop { display: grid; grid-template-columns: var(--year-w) 56px minmax(0, 1fr); align-items: start; }
 .tl-year { text-align: right; font: 500 13px/1.6 var(--font-mono); color: var(--mute); transition: color .6s var(--ease); padding-top: 2px; }
@@ -25,11 +27,24 @@ const css = `
 .tl-kind { font: 500 10.5px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); display: inline-flex; gap: 8px; align-items: center; }
 .tl-kind::before { content: ""; width: 14px; height: 1px; background: currentColor; }
 .tl-title { margin-top: 10px; font-weight: 700; font-size: clamp(20px, 2vw, 28px); letter-spacing: -0.03em; line-height: 1.12; }
-.tl-place { margin-top: 6px; font-size: 15px; font-weight: 500; color: var(--ink-2); }
+.tl-logo { width: 22px; height: 22px; object-fit: contain; border-radius: 6px; }
+.tl-place { display: flex; align-items: center; gap: 10px; margin-top: 6px; font-size: 15px; font-weight: 500; color: var(--ink-2); }
 .tl-detail { margin-top: 10px; font-size: 14.5px; line-height: 1.6; color: var(--mute); }
-.tl-stop.is-lit .tl-year { color: var(--ink); }
-.tl-stop.is-lit .tl-dot { box-shadow: inset 0 0 0 7px var(--ink); transform: scale(1.05); }
-.tl-stop.is-lit .tl-dot::after { opacity: .18; transform: none; }
+.tl-stop.is-lit .tl-year { color: var(--accent); }
+.tl-stop.is-lit .tl-dot { box-shadow: inset 0 0 0 7px var(--accent); transform: scale(1.05); }
+.tl-stop.is-lit .tl-dot::after { box-shadow: 0 0 0 1px var(--accent); opacity: .35; transform: none; }
+.tl-tech { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tl-tech .chip { height: 28px; font-size: 12.5px; }
+.tl-more { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; font: 500 12px/1 var(--font-mono); letter-spacing: .04em;
+  text-transform: uppercase; color: var(--accent); padding: 6px 0; }
+.tl-more i { font-style: normal; display: inline-block; transition: transform .5s var(--ease); }
+.tl-more[aria-expanded="true"] i { transform: rotate(45deg); }
+.tl-points { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .7s var(--ease); }
+.tl-points.is-open { grid-template-rows: 1fr; }
+.tl-points > ul { min-height: 0; overflow: hidden; list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.tl-points li { position: relative; padding-left: 18px; font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+.tl-points li:first-child { margin-top: 10px; }
+.tl-points li::before { content: ""; position: absolute; left: 0; top: .65em; width: 8px; height: 1.5px; background: var(--accent); }
 .tl-stop.is-lit .tl-body { transform: none; }
 
 .tl-next { margin-top: clamp(48px, 7vh, 72px); margin-left: calc(var(--spine-x) + 28px); border-radius: 26px; border: 1.5px dashed rgba(13,13,13,.28);
@@ -54,6 +69,7 @@ const css = `
 
 export default function Experience() {
   const fillRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState<number | null>(null);
 
   const listRef = useScrollProgress<HTMLDivElement>(
     (raw, el) => {
@@ -75,7 +91,7 @@ export default function Experience() {
       <div className="wrap">
         <SectionHead
           id="exp-title"
-          index={5}
+          index={4}
           label="Experience"
           lines={["Education & experience,", "one"]}
           accent="path."
@@ -84,15 +100,52 @@ export default function Experience() {
           <div className="tl-spine" aria-hidden="true" />
           <div ref={fillRef} className="tl-fill" aria-hidden="true" />
           <ol className="tl-list">
-            {TIMELINE.map((s) => (
+            {TIMELINE.map((s, i) => (
               <li key={s.year + s.title} className="tl-stop">
                 <p className="tl-year">{s.year}</p>
                 <span className="tl-dot" aria-hidden="true" />
                 <div className="tl-body">
                   <p className="tl-kind">{s.kind === "work" ? "Experience" : "Education"}</p>
                   <h3 className="tl-title">{s.title}</h3>
-                  <p className="tl-place">{s.place}</p>
+                  <p className="tl-place">
+                    {s.logo && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={asset(s.logo)} alt="" width={22} height={22} className="tl-logo" loading="lazy" />
+                    )}
+                    {s.place}
+                  </p>
                   <p className="tl-detail">{s.detail}</p>
+                  {s.tech && (
+                    <ul className="tl-tech" aria-label="Tools used">
+                      {s.tech.map((t) => (
+                        <li key={t.name} className="chip">
+                          {t.logo && <TechLogo name={t.logo} size={14} />}
+                          {t.name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {s.points && s.points.length > 0 && (
+                    <>
+                      <button
+                        type="button"
+                        className="tl-more"
+                        aria-expanded={open === i}
+                        aria-controls={`tl-points-${i}`}
+                        onClick={() => setOpen(open === i ? null : i)}
+                      >
+                        <i aria-hidden="true">+</i>
+                        {open === i ? "Show less" : `${s.points.length} more highlight${s.points.length > 1 ? "s" : ""}`}
+                      </button>
+                      <div id={`tl-points-${i}`} className={`tl-points${open === i ? " is-open" : ""}`} inert={open !== i}>
+                        <ul>
+                          {s.points.map((pt) => (
+                            <li key={pt}>{pt}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </>
+                  )}
                 </div>
               </li>
             ))}

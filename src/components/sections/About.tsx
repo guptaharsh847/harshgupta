@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { EDUCATION, EXPERIENCE, PROFILE, PROJECTS } from "@/lib/data";
 import { prefersReducedMotion } from "@/lib/hooks";
+import { asset } from "@/lib/asset";
 
 const css = `
 @layer components {
@@ -11,11 +12,17 @@ const css = `
 .about-col { display: flex; flex-direction: column; min-width: 0; }
 .about-left { gap: 26px; padding-top: 8px; }
 .about-left h2 { font-size: clamp(40px, 4.6vw, 72px); }
-.about-left .lede { max-width: 46ch; }
+.about-lead { font-size: clamp(19px, 1.7vw, 24px); line-height: 1.38; letter-spacing: -0.02em; font-weight: 500; color: var(--ink); max-width: 30ch; }
+.about-hl { list-style: none; margin: 0; padding: 0; display: grid; }
+.about-hl li { display: grid; grid-template-columns: 22px minmax(0,1fr); gap: 4px 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+.about-hl li:last-child { border-bottom: 1px solid var(--line); }
+.about-hl i { grid-row: span 2; font: 500 11px/1.6 var(--font-mono); color: var(--accent); font-style: normal; }
+.about-hl b { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.about-hl span { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
 .about-now { font-size: 15px; color: var(--ink); font-weight: 500; display: flex; gap: 10px; align-items: center; }
-.about-now::before { content: ""; width: 8px; height: 8px; border-radius: 99px; background: var(--ink); flex: none;
+.about-now::before { content: ""; width: 8px; height: 8px; border-radius: 99px; background: var(--accent); flex: none;
   animation: about-pulse 2.4s var(--ease) infinite; }
-@keyframes about-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(13,13,13,.25); } 50% { box-shadow: 0 0 0 6px rgba(13,13,13,0); } }
+@keyframes about-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(138,28,43,.35); } 50% { box-shadow: 0 0 0 6px rgba(13,13,13,0); } }
 .about-btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; }
 
 /* ------------------------------------------------------- lanyard */
@@ -97,11 +104,11 @@ const css = `
 .facts div:last-child { border-bottom: 1px solid var(--line); }
 .facts dt { font: 500 11px/1.6 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
 .facts dd { font-size: 15px; font-weight: 500; line-height: 1.45; overflow-wrap: anywhere; }
-.facts a { text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 4px; transition: text-decoration-color .3s; }
+.facts a { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; transition: text-decoration-color .3s; }
 .facts a:hover { text-decoration-color: var(--ink); }
 .quote { margin: auto 0 0; padding: 26px 26px 22px; border-radius: 24px; background: var(--card); box-shadow: var(--hair); position: relative; }
 .quote p { font-family: var(--font-serif); font-style: italic; font-size: clamp(22px, 2vw, 28px); line-height: 1.15; letter-spacing: -0.01em; }
-.quote::before { content: "\\201C"; position: absolute; top: -18px; left: 20px; font: italic 400 64px/1 var(--font-serif); color: var(--faint); }
+.quote::before { content: "\\201C"; position: absolute; top: -18px; left: 20px; font: italic 400 64px/1 var(--font-serif); color: var(--accent); }
 .quote figcaption { margin-top: 12px; font: 500 11px/1.4 var(--font-mono); letter-spacing: .04em; color: var(--mute); text-transform: uppercase; }
 
 @media (max-width: 1099px) {
@@ -228,9 +235,18 @@ export default function About() {
               </span>
             </span>
           </h2>
-          <p className="lede rv" style={{ "--i": 1 } as React.CSSProperties}>
-            {PROFILE.resumeSummary}
+          <p className="about-lead rv" style={{ "--i": 1 } as React.CSSProperties}>
+            {PROFILE.summaryLead}
           </p>
+          <ul className="about-hl rv" style={{ "--i": 2 } as React.CSSProperties}>
+            {PROFILE.summaryHighlights.map((h, i) => (
+              <li key={h.label}>
+                <i aria-hidden="true">{String(i + 1).padStart(2, "0")}</i>
+                <b>{h.label}</b>
+                <span>{h.text}</span>
+              </li>
+            ))}
+          </ul>
           <p className="about-now rv" style={{ "--i": 2 } as React.CSSProperties}>
             Currently {current.role} at {current.company}, {current.place}.
           </p>
@@ -281,7 +297,7 @@ export default function About() {
                       <div className="id-photo-in">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src="/portrait-bust.webp"
+                          src={asset("/portrait-bust.webp")}
                           alt={`Portrait of ${PROFILE.name}`}
                           width={128}
                           height={156}
@@ -294,8 +310,8 @@ export default function About() {
                     <p className="id-role">{PROFILE.role}</p>
                     <dl className="id-rows">
                       <div>
-                        <dt>ID No.</dt>
-                        <dd className="mono">HG-2021</dd>
+                        <dt>Since</dt>
+                        <dd className="mono">{PROFILE.careerStart}</dd>
                       </div>
                       <div>
                         <dt>Dept.</dt>
@@ -362,6 +378,14 @@ export default function About() {
                 <br />
                 {btech.short}, {btech.school}
               </dd>
+            </div>
+            <div>
+              <dt>Domains</dt>
+              <dd>{PROFILE.domains.join(" · ")}</dd>
+            </div>
+            <div>
+              <dt>Languages</dt>
+              <dd>{PROFILE.languages.join(" · ")}</dd>
             </div>
             <div>
               <dt>Current role</dt>

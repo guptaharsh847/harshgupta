@@ -1,15 +1,38 @@
 # Harsh Gupta: Portfolio
 
-A quiet, single-page portfolio built with Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS 4 and Lenis. It uses only white, black and grays. There is no WebGL, no GSAP and no loader. All motion comes from CSS, IntersectionObserver and small `requestAnimationFrame` loops.
+A quiet, single-page portfolio built with Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS 4 and Lenis. The palette is warm paper, ink and grays plus one oxblood accent (`--accent: #8a1c2b`, 8.3:1 contrast on paper). There is no WebGL, no GSAP and no loader. All motion comes from CSS, IntersectionObserver and small `requestAnimationFrame` loops.
 
 ## Run it
 
 ```bash
 npm install
 npm run dev        # http://localhost:3000
-npm run build      # production build (type-check + lint)
-npm start          # serve the production build
+npm run build      # static export to out/ (plain HTML, CSS, JS + assets)
+npm start          # preview out/ locally
 ```
+
+## Publish on GitHub Pages (free)
+
+The site is a static export (`output: "export"` in `next.config.ts`), so `out/` is just HTML, CSS and JS. It is published to **https://guptaharsh847.github.io/harshgupta/** by `.github/workflows/deploy.yml` on every push to `main`.
+
+One-time setup:
+
+1. Create an empty public repository named **harshgupta** under `guptaharsh847`.
+2. Push this folder:
+   ```bash
+   git init
+   git add .
+   git commit -m "Portfolio"
+   git branch -M main
+   git remote add origin https://github.com/guptaharsh847/harshgupta.git
+   git push -u origin main
+   ```
+3. On GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+4. Open the **Actions** tab. When the "Deploy to GitHub Pages" run turns green (about 2 minutes), the site is live.
+
+After that, every `git push` republishes the site automatically.
+
+How the sub-folder works: Pages serves this repo from `/harshgupta/`, so the workflow builds with `NEXT_PUBLIC_BASE_PATH=/harshgupta`. Every file path goes through `asset()` in `src/lib/asset.ts`. Local `npm run dev` and `npm run build` leave it empty, so they work at the root. `public/.nojekyll` stops GitHub Pages from hiding the `_next/` folder. If you rename the repo, update the two env values in the workflow.
 
 Requires Node 18.18+ (tested on Node 20).
 
@@ -26,6 +49,11 @@ Owner-approved deviations from the PDF:
 | LinkedIn | link text `guptaharsh847` / href `harsh-gupta-483b88157` | `linkedin.com/in/guptaharsh847` |
 | Work section | no projects list | built from the products named in the experience bullets |
 | `--mute` token | spec `#77756f` | `#6c6a64` so it passes WCAG AA contrast on paper |
+| ID card "ID No." | – | replaced by "Since 09/2021" (career start) |
+| Contact status | – | "Based in Bengaluru · open to conversations" (owner-approved) |
+| Skills table | 16 listed skills | plus Bootstrap, Mongoose, Git and Neutrinos, which are named in the experience bullets |
+
+**Company logos:** each `EXPERIENCE` entry has an optional `logo`. Add the file to `public/logos/companies/` and set, for example, `logo: "/logos/companies/infosys.svg"`; it then appears on that timeline stop.
 
 The résumé has no GitHub link, so every GitHub button is hidden. Setting `PROFILE.github` or a project's `github` makes them appear.
 
@@ -37,8 +65,8 @@ The résumé has no GitHub link, so every GitHub button is hidden. Setting `PROF
 | 01 | About | `sections/About.tsx` | lanyard ID card: damped pendulum swing, idle sway, 3D flip (hover / tap / Enter) |
 | 02 | Skills | `sections/Skills.tsx` | periodic table with a diagonal wave reveal, family filters and a sticky inspector with logo pop |
 | 03 | Work | `sections/Work.tsx` + `ui/MiniUI.tsx` | expanding accordion (flex 8) with spines; clip-path wipe of an "Illustrative UI" |
-| 04 | Certifications | `sections/Certifications.tsx` | ink-flood rows (`scaleX` on `::before`) |
-| 05 | Experience | `sections/Experience.tsx` | scroll-drawn spine; stops light up as it reaches them |
+| 04 | Experience | `sections/Experience.tsx` | scroll-drawn spine; stops light up; expandable highlights with tech chips |
+| 05 | Certifications | `sections/Certifications.tsx` | accent-flood rows (`scaleX` on `::before`), featured "Latest" badge |
 | 06 | Achievements | `sections/Achievements.tsx` | pinned horizontal gallery, count-up (easeOutQuart, 1.4 s), nearest card lifts |
 | 07 | Contact | `sections/Contact.tsx` | hopping letters, copy-email chip (`aria-live`), spinning "say hello" badge |
 
@@ -85,12 +113,13 @@ All trademarks belong to their respective owners. The concept icons (REST APIs, 
 
 ## Quality checks run
 
-- `npm run build`: passes with no type or lint errors. First-load JS for `/` is 133 kB.
+- `npm run build`: passes with no type or lint errors. First-load JS for `/` is 135 kB.
+- The static export, served under `/harshgupta/` the way GitHub Pages serves it: no failed requests; video, résumé, fonts and logos load; all checks below pass.
 - Playwright at 1440 × 900 and 390 × 844:
   - `scrollWidth === innerWidth` in every section.
   - No console errors.
   - The video pauses off-hero and resumes on return, and sound unlocks on the first gesture.
   - The ▶/❚❚ toggle, ID card swing and flip (keyboard and tap), mobile menu with Esc and scroll lock, pinned achievements and count-up all work.
 - Lighthouse (local production build):
-  - Desktop: Performance 99, Accessibility 100, Best Practices 100, SEO 100.
-  - Mobile: Performance 86–91, Accessibility 100.
+  - Desktop: Performance 95–99, Accessibility 100, Best Practices 100, SEO 100.
+  - Mobile: Performance 80–91 (varies between runs), Accessibility 100.

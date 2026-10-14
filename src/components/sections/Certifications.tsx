@@ -1,4 +1,5 @@
 import { CERTIFICATIONS } from "@/lib/data";
+import TechLogo from "@/components/ui/TechLogo";
 
 const css = `
 @layer components {
@@ -10,16 +11,21 @@ const css = `
 .certs-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); counter-reset: c; }
 .cert { position: relative; display: grid; grid-template-columns: 56px minmax(0,1fr) 32px; gap: 16px; align-items: center;
   padding: 26px 20px 26px 16px; border-bottom: 1px solid var(--line); isolation: isolate; outline: none; cursor: default; }
-.cert::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ink); transform: scaleX(0); transform-origin: 0 50%;
+.cert::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--accent); transform: scaleX(0); transform-origin: 0 50%;
   transition: transform .75s var(--ease); }
 .cert:hover::before, .cert:focus-visible::before { transform: scaleX(1); }
 .cert:focus-visible { box-shadow: 0 0 0 2px var(--ink); }
 .cert-n { font: 500 13px/1 var(--font-mono); color: var(--mute); transition: color .5s var(--ease); }
 .cert-t { font-weight: 600; font-size: clamp(18px, 1.7vw, 24px); letter-spacing: -0.025em; line-height: 1.2; transition: color .5s var(--ease); }
-.cert-i { margin-top: 6px; font-size: 14px; color: var(--mute); transition: color .5s var(--ease); display: flex; gap: 10px; flex-wrap: wrap; }
+.cert-i { margin-top: 8px; font-size: 14px; color: var(--mute); transition: color .5s var(--ease); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .cert-i .mono { font-size: 12px; }
+.cert-i img { width: 16px; height: 16px; }
+.cert-badge { display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 99px; background: var(--accent); color: #fff;
+  font: 600 10.5px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; transition: background-color .5s, color .5s; }
+.cert:hover .cert-badge, .cert:focus-visible .cert-badge { background: #fff; color: var(--accent); }
+.cert.is-featured .cert-t { font-size: clamp(22px, 2.2vw, 30px); }
 .cert-arrow { font-size: 20px; color: #fff; opacity: 0; transform: translateX(-14px); transition: opacity .5s var(--ease), transform .7s var(--ease); }
-.cert:hover .cert-n, .cert:focus-visible .cert-n, .cert:hover .cert-i, .cert:focus-visible .cert-i { color: rgba(255,255,255,.62); }
+.cert:hover .cert-n, .cert:focus-visible .cert-n, .cert:hover .cert-i, .cert:focus-visible .cert-i { color: rgba(255,255,255,.82); }
 .cert:hover .cert-t, .cert:focus-visible .cert-t { color: #fff; }
 .cert:hover .cert-arrow, .cert:focus-visible .cert-arrow { opacity: 1; transform: none; }
 @media (max-width: 859px) {
@@ -37,7 +43,7 @@ export default function Certifications() {
       <div className="wrap certs-grid">
         <div className="certs-head">
           <p className="tag rv">
-            <span>04 — Certifications</span>
+            <span>05 — Certifications</span>
           </p>
           <h2 id="certs-title" className="h-section mt-6">
             <span className="rv-mask">
@@ -55,7 +61,7 @@ export default function Certifications() {
           {CERTIFICATIONS.map((c, i) => (
             <li
               key={c.title}
-              className="cert rv"
+              className={`cert rv${c.featured ? " is-featured" : ""}`}
               tabIndex={0}
               style={{ "--i": i } as React.CSSProperties}
             >
@@ -65,6 +71,8 @@ export default function Certifications() {
               <div>
                 <p className="cert-t">{c.title}</p>
                 <p className="cert-i">
+                  {c.featured && <span className="cert-badge">Latest</span>}
+                  {c.logo && <TechLogo name={c.logo} size={16} />}
                   <span>{c.issuer}</span>
                   {c.date && <span className="mono">{c.date}</span>}
                 </p>

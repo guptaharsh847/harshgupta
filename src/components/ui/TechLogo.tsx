@@ -3,6 +3,8 @@
  * and thin line icons for concepts, drawn in the same 24px grid.
  */
 
+import { asset } from "@/lib/asset";
+
 type Brand = { file: string; label: string; tint: string };
 
 export const BRAND: Record<string, Brand> = {
@@ -22,6 +24,8 @@ export const BRAND: Record<string, Brand> = {
   vscode: { file: "vscode.svg", label: "VS Code", tint: "#007ACC" },
   bootstrap: { file: "bootstrap.svg", label: "Bootstrap", tint: "#7952B3" },
   jwt: { file: "jwt.svg", label: "JSON Web Tokens", tint: "#8a8a8a" },
+  mongoose: { file: "mongoose.svg", label: "Mongoose", tint: "#880000" },
+  git: { file: "git.svg", label: "Git", tint: "#F05032" },
 };
 
 const s = { fill: "none", stroke: "currentColor", strokeWidth: 1.25, strokeLinecap: "round", strokeLinejoin: "round" } as const;
@@ -34,6 +38,26 @@ export const CONCEPT: Record<string, { label: string; draw: React.ReactNode }> =
         <rect x="3" y="4" width="18" height="16" rx="3" />
         <path d="M3 8.5h18" />
         <path d="M8 12.5 6 14.5l2 2M16 12.5l2 2-2 2M13 12l-2 5" />
+      </g>
+    ),
+  },
+  lowcode: {
+    label: "Low-code platform",
+    draw: (
+      <g {...s}>
+        <rect x="3" y="3.5" width="7" height="7" rx="1.8" />
+        <rect x="14" y="13.5" width="7" height="7" rx="1.8" />
+        <rect x="3" y="13.5" width="7" height="7" rx="1.8" />
+        <path d="M17.5 4v6M14.5 7h6M10 7h2M6.5 10.5v3M10 17h4" />
+      </g>
+    ),
+  },
+  badge: {
+    label: "Certifications",
+    draw: (
+      <g {...s}>
+        <circle cx="12" cy="9" r="5.5" />
+        <path d="m9.6 9 1.7 1.7 3.2-3.4M8.5 13.4 7 21l5-2.6 5 2.6-1.5-7.6" />
       </g>
     ),
   },
@@ -97,7 +121,7 @@ export default function TechLogo({ name, size = 24, className = "", decorative =
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
-        src={`/logos/${brand.file}`}
+        src={asset(`/logos/${brand.file}`)}
         width={size}
         height={size}
         alt={decorative ? "" : `${brand.label} logo`}

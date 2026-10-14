@@ -18,25 +18,28 @@ const css = `
   justify-content: space-between; padding: 22px 0; text-align: center; transition: opacity .4s var(--ease); }
 .wk-trigger:focus-visible { outline: none; }
 .wk-panel.is-open .wk-trigger { opacity: 0; pointer-events: none; }
-.wk-spine-num { font: 500 12px/1 var(--font-mono); color: var(--mute); }
+.wk-spine-num { font: 500 12px/1 var(--font-mono); color: var(--accent); }
 .wk-spine-title { writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 600; font-size: 17px; letter-spacing: -0.02em;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-height: 70%; }
 .wk-plus { width: 38px; height: 38px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(13,13,13,.2); display: grid; place-items: center;
   font-size: 20px; font-weight: 300; line-height: 1; transition: transform .6s var(--ease), background-color .4s, color .4s; }
-.wk-trigger:hover .wk-plus { transform: rotate(90deg); background: var(--ink); color: #fff; }
+.wk-trigger:hover .wk-plus { transform: rotate(90deg); background: var(--accent); color: #fff; box-shadow: none; }
 
 .wk-body { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px;
   padding: clamp(24px, 2.6vw, 38px); opacity: 0; visibility: hidden; transition: opacity .35s var(--ease), visibility 0s .35s; }
 .wk-panel.is-open .wk-body { opacity: 1; visibility: visible; transition: opacity .7s var(--ease) .28s, visibility 0s; }
 .wk-info { display: flex; flex-direction: column; min-width: 0; }
 .wk-kicker { display: flex; gap: 12px; align-items: baseline; font: 500 12px/1.3 var(--font-mono); color: var(--mute); }
-.wk-kicker b { color: var(--ink); font-weight: 600; }
+.wk-kicker b { color: var(--accent); font-weight: 600; }
+.wk-impact { margin-top: 14px; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 99px;
+  background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: 14px; letter-spacing: -0.01em; }
+.wk-impact::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: currentColor; }
 .wk-title { margin-top: 16px; font-weight: 700; font-size: clamp(28px, 2.9vw, 44px); letter-spacing: -0.045em; line-height: 1; }
 .wk-desc { margin-top: 16px; color: var(--ink-2); font-size: 15px; line-height: 1.6; max-width: 48ch; }
 .wk-feats { margin-top: 18px; padding: 0; list-style: none; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 8px 18px; }
 .wk-feats li { font-size: 13.5px; color: var(--ink-2); padding-left: 16px; position: relative; line-height: 1.4; }
 .wk-feats li::before { content: ""; position: absolute; left: 0; top: .5em; width: 7px; height: 7px; border-radius: 2px;
-  box-shadow: inset 0 0 0 1.5px var(--ink); }
+  box-shadow: inset 0 0 0 1.5px var(--accent); }
 .wk-tech { margin-top: auto; padding-top: 18px; display: flex; flex-wrap: wrap; gap: 6px; list-style: none; }
 .wk-tech .chip img, .wk-tech .chip svg { width: 14px; height: 14px; }
 
@@ -57,7 +60,7 @@ const css = `
     text-align: left; width: 100%; }
   .wk-panel.is-open .wk-trigger { opacity: 1; pointer-events: auto; }
   .wk-spine-title { writing-mode: horizontal-tb; transform: none; max-height: none; flex: 1; white-space: normal; font-size: 19px; }
-  .wk-panel.is-open .wk-plus { transform: rotate(45deg); background: var(--ink); color: #fff; }
+  .wk-panel.is-open .wk-plus { transform: rotate(45deg); background: var(--accent); color: #fff; box-shadow: none; }
   .wk-body { position: relative; inset: auto; display: grid; grid-template-rows: 0fr; grid-template-columns: minmax(0,1fr);
     padding: 0 20px; opacity: 1; visibility: visible; transition: grid-template-rows .8s var(--ease), padding .8s var(--ease); }
   .wk-panel.is-open .wk-body { grid-template-rows: 1fr; padding-bottom: 22px; transition: grid-template-rows .8s var(--ease), padding .8s var(--ease); }
@@ -107,6 +110,7 @@ function Panel({ p, open, onOpen }: { p: Project; open: boolean; onOpen: () => v
             <p className="wk-title" aria-hidden="true">
               {p.title}
             </p>
+            <p className="wk-impact">{p.impact}</p>
             <p className="wk-desc">{p.description}</p>
             <ul className="wk-feats">
               {p.features.map((f) => (
@@ -139,7 +143,8 @@ function Panel({ p, open, onOpen }: { p: Project; open: boolean; onOpen: () => v
 }
 
 export default function Work() {
-  const [open, setOpen] = useState(PROJECTS[0].id);
+  // open on the strongest story first
+  const [open, setOpen] = useState("gaming");
   return (
     <section id="work" className="section" aria-labelledby="work-title">
       <style dangerouslySetInnerHTML={{ __html: css + miniUiCss }} />

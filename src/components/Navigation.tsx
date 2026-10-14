@@ -7,7 +7,7 @@ import { lockScroll, scrollToTarget } from "@/lib/scroll";
 const css = `
 @layer components {
 .nav { position: fixed; inset: 0 0 auto 0; z-index: 50; pointer-events: none; }
-.nav-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--ink);
+.nav-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--accent);
   transform-origin: 0 50%; transform: scaleX(0); z-index: 60; pointer-events: none; }
 .nav-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px;
   padding-top: 18px; }
@@ -19,7 +19,7 @@ const css = `
   color: var(--ink); background: transparent;
   transition: background-color .5s var(--ease), color .5s var(--ease), transform 1s var(--ease); }
 .nav.is-scrolled .nav-mark { background: var(--ink); color: #fff; }
-.nav-brand:hover .nav-mark { transform: rotate(360deg); }
+.nav-brand:hover .nav-mark { transform: rotate(360deg); background: var(--accent); color: #fff; box-shadow: inset 0 0 0 1.5px var(--accent); }
 .nav-name { font-weight: 600; font-size: 15px; letter-spacing: -0.02em; white-space: nowrap;
   transition: opacity .5s var(--ease), transform .6s var(--ease); }
 .nav.is-scrolled .nav-name { opacity: 0; transform: translateX(-8px); pointer-events: none; }
@@ -56,7 +56,7 @@ const css = `
   opacity: 0; transform: translateY(30px); transition: opacity .6s var(--ease), transform .8s var(--ease); }
 .nav-overlay a small { font: 500 12px/1 var(--font-mono); color: var(--mute); letter-spacing: .04em; transform: translateY(-1.4em); }
 .nav-overlay.is-open a { opacity: 1; transform: none; transition-delay: calc(180ms + var(--i) * 60ms); }
-.nav-overlay a[aria-current="true"] { color: var(--mute); }
+.nav-overlay a[aria-current="true"] { color: var(--accent); }
 .nav-overlay-foot { margin-top: auto; display: grid; gap: 6px; font-size: 14px; color: var(--mute); }
 .nav-overlay-foot a { all: unset; cursor: pointer; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
 
