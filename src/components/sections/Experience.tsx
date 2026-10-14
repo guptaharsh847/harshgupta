@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { TIMELINE } from "@/lib/data";
 import { prefersReducedMotion, useScrollProgress } from "@/lib/hooks";
 import { scrollToTarget } from "@/lib/scroll";
+import { asset } from "@/lib/asset";
 import SectionHead from "@/components/ui/SectionHead";
 import TechLogo from "@/components/ui/TechLogo";
 
@@ -109,7 +110,7 @@ export default function Experience() {
                   <p className="tl-place">
                     {s.logo && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={s.logo} alt="" width={22} height={22} className="tl-logo" loading="lazy" />
+                      <img src={asset(s.logo)} alt="" width={22} height={22} className="tl-logo" loading="lazy" />
                     )}
                     {s.place}
                   </p>

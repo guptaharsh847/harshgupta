@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { EDUCATION, EXPERIENCE, PROFILE, PROJECTS } from "@/lib/data";
 import { prefersReducedMotion } from "@/lib/hooks";
+import { asset } from "@/lib/asset";
 
 const css = `
 @layer components {
@@ -296,7 +297,7 @@ export default function About() {
                       <div className="id-photo-in">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src="/portrait-bust.webp"
+                          src={asset("/portrait-bust.webp")}
                           alt={`Portrait of ${PROFILE.name}`}
                           width={128}
                           height={156}

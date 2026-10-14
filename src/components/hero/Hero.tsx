@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { preload } from "react-dom";
 import { PROFILE } from "@/lib/data";
 import { prefersReducedMotion } from "@/lib/hooks";
+import { asset } from "@/lib/asset";
 import { scrollToTarget } from "@/lib/scroll";
 
 const css = `
@@ -100,7 +101,7 @@ function PauseIcon() {
 }
 
 export default function Hero() {
-  preload("/hero/poster.webp", { as: "image", fetchPriority: "high" });
+  preload(asset("/hero/poster.webp"), { as: "image", fetchPriority: "high" });
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const soundBtnRef = useRef<HTMLButtonElement>(null);
@@ -232,13 +233,13 @@ export default function Hero() {
             loop
             playsInline
             preload="auto"
-            poster="/hero/poster.webp"
+            poster={asset("/hero/poster.webp")}
             width={768}
             height={960}
             aria-describedby="hero-video-desc"
           >
-            <source src="/hero/hero.webm" type="video/webm" />
-            <source src="/hero/hero.mp4" type="video/mp4" />
+            <source src={asset("/hero/hero.webm")} type="video/webm" />
+            <source src={asset("/hero/hero.mp4")} type="video/mp4" />
           </video>
           <p id="hero-video-desc" className="sr-only">
             Intro video: an animated avatar of {PROFILE.name}, standing and speaking a short self-introduction.

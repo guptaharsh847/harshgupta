@@ -7,9 +7,32 @@ A quiet, single-page portfolio built with Next.js 15 (App Router), React 19, Typ
 ```bash
 npm install
 npm run dev        # http://localhost:3000
-npm run build      # production build (type-check + lint)
-npm start          # serve the production build
+npm run build      # static export to out/ (plain HTML, CSS, JS + assets)
+npm start          # preview out/ locally
 ```
+
+## Publish on GitHub Pages (free)
+
+The site is a static export (`output: "export"` in `next.config.ts`), so `out/` is just HTML, CSS and JS. It is published to **https://guptaharsh847.github.io/harshgupta/** by `.github/workflows/deploy.yml` on every push to `main`.
+
+One-time setup:
+
+1. Create an empty public repository named **harshgupta** under `guptaharsh847`.
+2. Push this folder:
+   ```bash
+   git init
+   git add .
+   git commit -m "Portfolio"
+   git branch -M main
+   git remote add origin https://github.com/guptaharsh847/harshgupta.git
+   git push -u origin main
+   ```
+3. On GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+4. Open the **Actions** tab. When the "Deploy to GitHub Pages" run turns green (about 2 minutes), the site is live.
+
+After that, every `git push` republishes the site automatically.
+
+How the sub-folder works: Pages serves this repo from `/harshgupta/`, so the workflow builds with `NEXT_PUBLIC_BASE_PATH=/harshgupta`. Every file path goes through `asset()` in `src/lib/asset.ts`. Local `npm run dev` and `npm run build` leave it empty, so they work at the root. `public/.nojekyll` stops GitHub Pages from hiding the `_next/` folder. If you rename the repo, update the two env values in the workflow.
 
 Requires Node 18.18+ (tested on Node 20).
 
@@ -90,7 +113,8 @@ All trademarks belong to their respective owners. The concept icons (REST APIs, 
 
 ## Quality checks run
 
-- `npm run build`: passes with no type or lint errors. First-load JS for `/` is 134 kB.
+- `npm run build`: passes with no type or lint errors. First-load JS for `/` is 135 kB.
+- The static export, served under `/harshgupta/` the way GitHub Pages serves it: no failed requests; video, résumé, fonts and logos load; all checks below pass.
 - Playwright at 1440 × 900 and 390 × 844:
   - `scrollWidth === innerWidth` in every section.
   - No console errors.

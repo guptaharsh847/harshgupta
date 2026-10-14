@@ -4,6 +4,8 @@
  * If it is not in the résumé, it is not on the site.
  */
 
+import { asset } from "@/lib/asset";
+
 export type SectionId =
   | "top"
   | "about"
@@ -47,7 +49,7 @@ export const PROFILE = {
   github: null as string | null, // not in the résumé
   linkedin: "https://www.linkedin.com/in/guptaharsh847",
   linkedinLabel: "linkedin.com/in/guptaharsh847",
-  resume: "/Harsh-Gupta-Resume.pdf",
+  resume: asset("/Harsh-Gupta-Resume.pdf"),
   languages: ["English", "Hindi"],
 } as const;
 

@@ -3,6 +3,8 @@
  * and thin line icons for concepts, drawn in the same 24px grid.
  */
 
+import { asset } from "@/lib/asset";
+
 type Brand = { file: string; label: string; tint: string };
 
 export const BRAND: Record<string, Brand> = {
@@ -119,7 +121,7 @@ export default function TechLogo({ name, size = 24, className = "", decorative =
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
-        src={`/logos/${brand.file}`}
+        src={asset(`/logos/${brand.file}`)}
         width={size}
         height={size}
         alt={decorative ? "" : `${brand.label} logo`}
