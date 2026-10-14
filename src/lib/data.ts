@@ -26,6 +26,18 @@ export const PROFILE = {
   location: "Bengaluru",
   resumeSummary:
     "Full Stack Developer with 5.1+ years of experience in developing and maintaining web applications using React.js, Node.js, Express.js, and MongoDB. Proficient in building RESTful APIs, handling database operations, and implementing user authentication. Experienced in integrating third-party services, improving application performance, and ensuring cross-browser compatibility. Focused on writing clean, maintainable code and delivering reliable, production-ready solutions.",
+  /** first sentence of the summary, shown large in About */
+  summaryLead:
+    "Full Stack Developer with 5.1+ years of experience in developing and maintaining web applications using React.js, Node.js, Express.js, and MongoDB.",
+  /** the remaining summary sentences, verbatim, as highlight rows */
+  summaryHighlights: [
+    { label: "APIs & auth", text: "Proficient in building RESTful APIs, handling database operations, and implementing user authentication." },
+    { label: "Integration & speed", text: "Experienced in integrating third-party services, improving application performance, and ensuring cross-browser compatibility." },
+    { label: "Craft", text: "Focused on writing clean, maintainable code and delivering reliable, production-ready solutions." },
+  ],
+  /** industries worked in, from the employers in the résumé */
+  domains: ["Insurance", "Gaming", "Enterprise IT"],
+  careerStart: "09/2021",
   /** owner-confirmed update (résumé PDF says "around 4.8 years") */
   experienceYears: "5.1+",
   /** owner-chosen "Valid till" year for the ID card */
@@ -57,7 +69,7 @@ export type Skill = {
   family: Family;
   /** key into TechLogo BRAND / CONCEPT maps */
   logo: string;
-  /** Work panel ids whose résumé text names this skill */
+  /** Work panel ids where this skill is used (named in the bullet, or the stack it is built on) */
   usedIn: string[];
   /** experience ids whose role-level bullets name this skill (not tied to one product) */
   at?: string[];
@@ -69,10 +81,11 @@ export const SKILL_GROUPS: { family: Family; skills: Skill[] }[] = [
     skills: [
       { name: "React.js", symbol: "Re", family: "Frontend", logo: "react", usedIn: ["wellness", "gaming", "admin"] },
       { name: "Redux", symbol: "Rx", family: "Frontend", logo: "redux", usedIn: ["admin"] },
-      { name: "HTML5", symbol: "Ht", family: "Frontend", logo: "html5", usedIn: [] },
-      { name: "CSS3", symbol: "Cs", family: "Frontend", logo: "css3", usedIn: [] },
-      { name: "JavaScript (ES6+)", symbol: "Js", family: "Frontend", logo: "javascript", usedIn: [] },
+      { name: "HTML5", symbol: "Ht", family: "Frontend", logo: "html5", usedIn: ["wellness", "gaming", "admin"] },
+      { name: "CSS3", symbol: "Cs", family: "Frontend", logo: "css3", usedIn: ["wellness", "gaming", "admin"] },
+      { name: "JavaScript (ES6+)", symbol: "Js", family: "Frontend", logo: "javascript", usedIn: ["insurance", "policy", "wellness", "gaming", "admin"] },
       { name: "Tailwind CSS", symbol: "Tw", family: "Frontend", logo: "tailwindcss", usedIn: ["admin"] },
+      { name: "Bootstrap", symbol: "Bs", family: "Frontend", logo: "bootstrap", usedIn: ["admin"] },
     ],
   },
   {
@@ -89,15 +102,18 @@ export const SKILL_GROUPS: { family: Family; skills: Skill[] }[] = [
     skills: [
       { name: "MongoDB", symbol: "Mg", family: "Database", logo: "mongodb", usedIn: ["gaming", "admin"], at: ["canara"] },
       { name: "Firebase", symbol: "Fb", family: "Database", logo: "firebase", usedIn: [], at: ["canara"] },
+      { name: "Mongoose", symbol: "Mo", family: "Database", logo: "mongoose", usedIn: ["gaming"] },
       { name: "MySQL", symbol: "Sq", family: "Database", logo: "mysql", usedIn: [] },
     ],
   },
   {
     family: "Tools",
     skills: [
+      { name: "Git", symbol: "Gt", family: "Tools", logo: "git", usedIn: ["gaming"] },
       { name: "GitHub", symbol: "Gh", family: "Tools", logo: "github", usedIn: ["gaming"] },
       { name: "Postman", symbol: "Pm", family: "Tools", logo: "postman", usedIn: ["gaming", "admin"] },
       { name: "VS Code", symbol: "Vs", family: "Tools", logo: "vscode", usedIn: [] },
+      { name: "Neutrinos", symbol: "Nt", family: "Tools", logo: "lowcode", usedIn: ["insurance"] },
     ],
   },
 ];
@@ -112,11 +128,16 @@ export type Experience = {
   end: string;
   duration?: string;
   points: string[];
+  /** optional company logo, e.g. "/logos/companies/infosys.svg" (add the file, then set this) */
+  logo?: string;
+  /** tools named in this role's bullets */
+  tech: { name: string; logo?: string }[];
 };
 
 export const EXPERIENCE: Experience[] = [
   {
     id: "nexsys",
+    tech: [{ name: "Neutrinos", logo: "lowcode" }, { name: "Node.js", logo: "nodejs" }, { name: "Express.js", logo: "express" }, { name: "REST APIs", logo: "rest" }],
     role: "Senior Software Developer",
     company: "Nexsys IT",
     place: "Bengaluru",
@@ -129,6 +150,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: "canara",
+    tech: [{ name: "Node.js", logo: "nodejs" }, { name: "React.js", logo: "react" }, { name: "MongoDB", logo: "mongodb" }, { name: "Firebase", logo: "firebase" }, { name: "REST APIs", logo: "rest" }],
     role: "Full Stack Developer (Assistant Manager)",
     company: "Canara HSBC Life Insurance",
     place: "Gurugram",
@@ -146,6 +168,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: "atmegame",
+    tech: [{ name: "MongoDB", logo: "mongodb" }, { name: "Express.js", logo: "express" }, { name: "React.js", logo: "react" }, { name: "Node.js", logo: "nodejs" }, { name: "Mongoose", logo: "mongoose" }, { name: "Postman", logo: "postman" }, { name: "Git", logo: "git" }, { name: "GitHub", logo: "github" }],
     role: "Full Stack MERN Developer",
     company: "Atmegame",
     place: "New Delhi",
@@ -164,6 +187,7 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: "infosys",
+    tech: [{ name: "React.js", logo: "react" }, { name: "Redux", logo: "redux" }, { name: "Tailwind CSS", logo: "tailwindcss" }, { name: "Bootstrap", logo: "bootstrap" }, { name: "Node.js", logo: "nodejs" }, { name: "Express.js", logo: "express" }, { name: "JWT", logo: "jwt" }, { name: "Postman", logo: "postman" }],
     role: "System Engineer (Developer)",
     company: "Infosys",
     place: "Pune",
@@ -232,6 +256,8 @@ export type Project = {
   description: string;
   features: string[];
   tech: { name: string; logo?: string }[];
+  /** headline outcome, résumé wording */
+  impact: string;
   github: string | null;
   ui: "insurance" | "policy" | "wellness" | "gaming" | "admin";
 };
@@ -257,6 +283,7 @@ export const PROJECTS: Project[] = [
       { name: "Neutrinos" },
     ],
     github: null,
+    impact: "Customer & internal portals",
     ui: "insurance",
   },
   {
@@ -272,6 +299,7 @@ export const PROJECTS: Project[] = [
       { name: "RESTful APIs", logo: "rest" },
     ],
     github: null,
+    impact: "View policies, pay & raise requests",
     ui: "policy",
   },
   {
@@ -284,6 +312,7 @@ export const PROJECTS: Project[] = [
     features: ["Internal tool", "2-member team", "React.js front end", "Supports internal user operations"],
     tech: [{ name: "React.js", logo: "react" }],
     github: null,
+    impact: "Built in a 2-member team",
     ui: "wellness",
   },
   {
@@ -308,6 +337,7 @@ export const PROJECTS: Project[] = [
       { name: "GitHub", logo: "github" },
     ],
     github: null,
+    impact: "Serving millions of users",
     ui: "gaming",
   },
   {
@@ -333,14 +363,15 @@ export const PROJECTS: Project[] = [
       { name: "JWT", logo: "jwt" },
     ],
     github: null,
+    impact: "Granular role-based permissions",
     ui: "admin",
   },
 ];
 
 /* ---------------------------------------------------------- certifications */
-export const CERTIFICATIONS: { title: string; issuer: string; date?: string }[] = [
-  { title: "MongoDB Certified Associate Developer", issuer: "MongoDB", date: "11/2025" },
-  { title: "Official Training for MongoDB Associate Developer Exam", issuer: "MongoDB office" },
+export const CERTIFICATIONS: { title: string; issuer: string; date?: string; logo?: string; featured?: boolean }[] = [
+  { title: "MongoDB Certified Associate Developer", issuer: "MongoDB", date: "11/2025", logo: "mongodb", featured: true },
+  { title: "Official Training for MongoDB Associate Developer Exam", issuer: "MongoDB office", logo: "mongodb" },
   { title: "NPTEL certification in Database Management System", issuer: "IIT Kharagpur", date: "04/2019" },
   { title: "Microsoft Technology Associate (HTML, CS)", issuer: "Microsoft", date: "04/2019" },
 ];
@@ -363,33 +394,33 @@ export const ACHIEVEMENTS: Achievement[] = [
     value: 5.1,
     decimals: 1,
     suffix: "+ yrs",
-    caption: "Building web applications",
+    caption: "Building web applications since 09/2021",
     detail: "React.js · Node.js · Express.js · MongoDB",
     logo: "briefcase",
   },
   {
-    label: "Companies",
-    value: 4,
+    label: "MongoDB Certified Associate Developer",
+    value: 2025,
     decimals: 0,
-    caption: "Nexsys IT · Canara HSBC Life · Atmegame · Infosys",
-    detail: "Bengaluru · Gurugram · New Delhi · Pune",
-    logo: "building",
+    caption: "Certified by MongoDB, 11/2025",
+    detail: "After official exam training in the MongoDB office",
+    logo: "mongodb",
   },
   {
     label: "Research publications",
     value: 2,
     decimals: 0,
-    caption: "IRJMETS (2021) · IRJMS (2020)",
-    detail: "e-ISSN: 2582-5208",
+    caption: "International Research Journal of Modernization in Engineering Technology and Science (2021)",
+    detail: "International Research Journal of Multidisciplinary Studies (2020)",
     logo: "paper",
   },
   {
     label: "Certifications",
     value: 4,
     decimals: 0,
-    caption: "MongoDB Certified Associate Developer",
-    detail: "Plus NPTEL DBMS (IIT Kharagpur) & Microsoft MTA",
-    logo: "mongodb",
+    caption: "MongoDB, NPTEL (IIT Kharagpur) & Microsoft",
+    detail: "Database Management System · MTA (HTML, CS)",
+    logo: "badge",
   },
   {
     label: "MBA (Finance)",
@@ -398,15 +429,6 @@ export const ACHIEVEMENTS: Achievement[] = [
     suffix: "GPA",
     caption: "Chandigarh University",
     detail: "2022 – 2024 · Online Learning",
-    logo: "cap",
-  },
-  {
-    label: "B.Tech (IT)",
-    value: 7.9,
-    decimals: 1,
-    suffix: "GPA",
-    caption: "Acropolis Institute of Technology and Research",
-    detail: "2017 – 2021 · Full Time",
     logo: "cap",
   },
 ];
@@ -423,6 +445,9 @@ export type TimelineStop = {
   place: string;
   detail: string;
   kind: "education" | "work";
+  points?: string[];
+  tech?: { name: string; logo?: string }[];
+  logo?: string;
 };
 
 /** Education + experience in chronological order (oldest first). */
@@ -440,6 +465,9 @@ export const TIMELINE: TimelineStop[] = [
     place: `${EXPERIENCE[3].company}, ${EXPERIENCE[3].place}`,
     detail: `${EXPERIENCE[3].duration} · ${EXPERIENCE[3].points[0]}`,
     kind: "work",
+    points: EXPERIENCE[3].points.slice(1),
+    tech: EXPERIENCE[3].tech,
+    logo: EXPERIENCE[3].logo,
   },
   {
     year: "2022 – 2024",
@@ -454,6 +482,9 @@ export const TIMELINE: TimelineStop[] = [
     place: `${EXPERIENCE[2].company}, ${EXPERIENCE[2].place}`,
     detail: `${EXPERIENCE[2].duration} · ${EXPERIENCE[2].points[0]}`,
     kind: "work",
+    points: EXPERIENCE[2].points.slice(1),
+    tech: EXPERIENCE[2].tech,
+    logo: EXPERIENCE[2].logo,
   },
   {
     year: "07/2025 – 02/2026",
@@ -461,6 +492,9 @@ export const TIMELINE: TimelineStop[] = [
     place: `${EXPERIENCE[1].company}, ${EXPERIENCE[1].place}`,
     detail: `${EXPERIENCE[1].duration} · ${EXPERIENCE[1].points[0]}`,
     kind: "work",
+    points: EXPERIENCE[1].points.slice(1),
+    tech: EXPERIENCE[1].tech,
+    logo: EXPERIENCE[1].logo,
   },
   {
     year: "05/2026 – Present",
@@ -468,5 +502,8 @@ export const TIMELINE: TimelineStop[] = [
     place: `${EXPERIENCE[0].company}, ${EXPERIENCE[0].place}`,
     detail: EXPERIENCE[0].points[1],
     kind: "work",
+    points: [EXPERIENCE[0].points[0]],
+    tech: EXPERIENCE[0].tech,
+    logo: EXPERIENCE[0].logo,
   },
 ];

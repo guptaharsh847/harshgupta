@@ -12,7 +12,7 @@ const css = `
   gap: clamp(28px, 5vh, 56px); padding-block: 88px 32px; }
 .ach-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .ach-progress { width: min(280px, 40vw); height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
-.ach-progress i { display: block; height: 100%; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
+.ach-progress i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
 .ach-track { display: flex; gap: clamp(14px, 1.6vw, 22px); list-style: none; margin: 0; width: max-content; will-change: transform;
   padding: 18px max(var(--gutter), calc((100vw - 1320px) / 2)) 30px; align-items: center; }
 .ach-card { position: relative; flex: none; width: min(clamp(340px, 40vw, 540px), calc(100vw - 2 * var(--gutter)));
@@ -31,14 +31,16 @@ const css = `
 .ach-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
 .ach-text { min-width: 0; max-width: 60%; }
 .ach-label { font: 500 11px/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--mute); }
-.ach-caption { margin-top: 8px; font-weight: 600; font-size: 16px; letter-spacing: -0.02em; line-height: 1.3; }
+.ach-caption { margin-top: 8px; font-weight: 600; font-size: 15px; letter-spacing: -0.02em; line-height: 1.3; }
 .ach-detail { margin-top: 6px; font-size: 13px; color: var(--mute); line-height: 1.4; }
 .ach-num { font-weight: 700; font-size: clamp(72px, 8vw, 128px); letter-spacing: -0.06em; line-height: .8; white-space: nowrap;
   font-variant-numeric: tabular-nums; display: flex; align-items: flex-start; gap: 6px; }
-.ach-num small { font: 400 italic clamp(18px, 1.6vw, 24px)/1 var(--font-serif); color: var(--mute); letter-spacing: 0; margin-top: .2em; }
+.ach-num { transition: color .8s var(--ease); }
+.ach-card.is-near .ach-num { color: var(--accent); }
+.ach-num small { font: 400 italic clamp(18px, 1.6vw, 24px)/1 var(--font-serif); color: var(--accent); letter-spacing: 0; margin-top: .2em; }
 .ach-end { flex: none; padding: 0 clamp(24px, 4vw, 64px); font-weight: 700; font-size: clamp(28px, 3vw, 44px); letter-spacing: -0.045em;
   white-space: nowrap; color: var(--ink); }
-.ach-end span { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--mute); }
+.ach-end span { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--accent); }
 @media (max-width: 599px) {
   .ach-text { max-width: 58%; }
   .ach-caption { font-size: 14.5px; }

@@ -13,6 +13,7 @@
   --color-faint: #a9a6a0;
   --color-soft: #e9e6e0;
   --color-line: rgba(13, 13, 13, 0.1);
+  --color-accent: #8a1c2b;
 }
 
 :root {
@@ -24,6 +25,10 @@
   --faint: #a9a6a0;
   --line: rgba(13, 13, 13, 0.1);
   --soft: #e9e6e0;
+  /* single accent: oxblood. 8.3:1 on paper, 9.3:1 on white, white text on it 9.3:1 */
+  --accent: #8a1c2b;
+  --accent-deep: #6e1422;
+  --accent-soft: rgba(138,28,43, 0.1);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --gutter: clamp(18px, 4vw, 64px);
   --section-y: clamp(96px, 14vh, 160px);
@@ -62,11 +67,11 @@
     cursor: pointer;
   }
   ::selection {
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--accent);
+    color: #fff;
   }
   :focus-visible {
-    outline: 2px solid var(--ink);
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
     border-radius: 6px;
   }
@@ -107,7 +112,7 @@
     width: 6px;
     height: 6px;
     border-radius: 99px;
-    background: var(--ink);
+    background: var(--accent);
   }
 
   .h-display {
@@ -129,7 +134,7 @@
     font-style: italic;
     font-weight: 400;
     letter-spacing: -0.02em;
-    color: var(--mute);
+    color: var(--accent);
   }
   .mono {
     font-family: var(--font-mono);
@@ -179,8 +184,8 @@
     box-shadow: 0 10px 24px -14px rgba(13, 13, 13, 0.6);
   }
   .btn-primary:hover {
-    background: #262626;
-    box-shadow: 0 16px 30px -16px rgba(13, 13, 13, 0.7);
+    background: var(--accent);
+    box-shadow: 0 16px 30px -14px rgba(138,28,43, 0.55);
   }
   .btn-ghost {
     background: transparent;
