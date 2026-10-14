@@ -30,9 +30,7 @@ export const miniUiCss = `
 .mu-steps { display: flex; align-items: center; gap: 0; }
 .mu-step { flex: none; padding: 8px 10px; border-radius: 10px; background: #fff; box-shadow: var(--hair); font-weight: 600; font-size: 10.5px; white-space: nowrap; }
 .mu-step.ink { background: var(--ink); color: #fff; }
-.mu-link { flex: 1; height: 1.5px; min-width: 10px; background: repeating-linear-gradient(90deg, var(--ink) 0 4px, transparent 4px 8px);
-  animation: mu-dash 1.2s linear infinite; background-size: 16px 100%; }
-@keyframes mu-dash { to { background-position: 16px 0; } }
+.mu-link { flex: 1; height: 1.5px; min-width: 10px; background: repeating-linear-gradient(90deg, var(--ink) 0 4px, transparent 4px 8px); }
 .mu-tiles { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
 .mu-tile { border-radius: 12px; box-shadow: var(--hair); padding: 10px; display: grid; gap: 8px; justify-items: start; background: #fff; }
 .mu-ring { width: 40px; height: 40px; border-radius: 99px; background: conic-gradient(var(--ink) calc(var(--p) * 1%), var(--soft) 0);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { PROFILE } from "@/lib/data";
 import { scrollToTarget } from "@/lib/scroll";
 
@@ -26,7 +26,7 @@ const css = `
 .ct-links { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px; }
 
 .ct-badge { position: relative; width: 168px; height: 168px; border-radius: 999px; display: grid; place-items: center; flex: none; }
-.ct-badge svg.ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: badge-spin 18s linear infinite; }
+.ct-badge svg.ct-ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: badge-spin 18s linear infinite; }
 .ct-badge text { font: 500 13px var(--font-mono); letter-spacing: 3.2px; text-transform: uppercase; fill: var(--ink); }
 .ct-badge-core { width: 76px; height: 76px; border-radius: 999px; background: var(--ink); color: #fff; display: grid; place-items: center;
   font-size: 26px; transition: transform .6s var(--ease); }
@@ -55,15 +55,17 @@ function HopText({ text }: { text: string }) {
   };
   return (
     <>
-      {text.split(" ").map((word, wi, arr) => (
-        <span key={wi} className="ct-word">
+      {text.split(" ").map((word, wi) => (
+        <Fragment key={wi}>
+        {wi > 0 && " "}
+        <span className="ct-word">
           {word.split("").map((ch, i) => (
             <span key={i} className="ct-ch" onPointerEnter={hop}>
               {ch}
             </span>
           ))}
-          {wi < arr.length - 1 ? " " : ""}
         </span>
+        </Fragment>
       ))}
     </>
   );
@@ -139,7 +141,7 @@ export default function Contact() {
           </div>
 
           <a className="ct-badge rv" href={`mailto:${PROFILE.email}`} aria-label={`Say hello: email ${PROFILE.name}`}>
-            <svg className="ring" viewBox="0 0 168 168" aria-hidden="true">
+            <svg className="ct-ring" viewBox="0 0 168 168" aria-hidden="true">
               <defs>
                 <path id="ct-circle" d="M84,84 m-64,0 a64,64 0 1,1 128,0 a64,64 0 1,1 -128,0" />
               </defs>

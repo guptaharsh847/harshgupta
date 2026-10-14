@@ -19,7 +19,7 @@ const css = `
 .about-btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; }
 
 /* ------------------------------------------------------- lanyard */
-.lanyard-col { position: relative; align-items: center; min-height: 560px; }
+.lanyard-col { position: relative; align-items: center; min-height: 580px; }
 .lanyard { position: absolute; top: calc(-1 * var(--section-y)); left: 50%; width: 300px; margin-left: -150px;
   transform-origin: 50% 0; will-change: transform; display: flex; flex-direction: column; align-items: center; }
 .strap { position: relative; width: 30px; height: calc(var(--section-y) + 56px); overflow: hidden; border-radius: 0 0 4px 4px;
@@ -35,7 +35,7 @@ const css = `
 .clip::after { content: ""; position: absolute; left: 50%; top: 11px; width: 16px; height: 20px; margin-left: -8px;
   border: 3px solid #a3a3a3; border-top-color: #cfcfcf; border-radius: 9px; background: transparent; }
 
-.idcard { position: relative; width: 300px; height: 404px; margin-top: -8px; perspective: 1400px; cursor: pointer;
+.idcard { position: relative; width: 300px; height: 416px; margin-top: -8px; perspective: 1400px; cursor: pointer;
   border-radius: 22px; -webkit-tap-highlight-color: transparent; }
 .idcard:focus-visible { outline-offset: 6px; border-radius: 22px; }
 .idcard-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d;
@@ -46,30 +46,29 @@ const css = `
   -webkit-backface-visibility: hidden; backface-visibility: hidden; box-shadow: var(--hair), var(--lift);
   display: flex; flex-direction: column; }
 .idface.back { transform: rotateY(180deg); }
-.id-band { height: 58px; flex: none; background: var(--ink); color: #fff; display: flex; align-items: flex-end; justify-content: space-between;
+.id-band { height: 50px; flex: none; background: var(--ink); color: #fff; display: flex; align-items: flex-end; justify-content: space-between;
   padding: 0 18px 12px; font: 600 11px/1 var(--font-mono); letter-spacing: .2em; position: relative; }
 .id-band::before { content: ""; position: absolute; top: 10px; left: 50%; width: 46px; height: 9px; margin-left: -23px; border-radius: 99px;
   background: var(--paper); box-shadow: inset 0 1px 2px rgba(0,0,0,.35); }
 .id-band em { font-style: normal; color: rgba(255,255,255,.55); letter-spacing: .08em; }
-.id-body { padding: 18px 20px 16px; display: flex; flex-direction: column; align-items: center; flex: 1; min-height: 0; }
-.id-photo { position: relative; width: 128px; height: 156px; padding: 3px; border-radius: 18px;
+.id-body { padding: 14px 18px 14px; display: flex; flex-direction: column; align-items: center; flex: 1; min-height: 0; }
+.id-photo { position: relative; isolation: isolate; width: 128px; height: 156px; padding: 3px; border-radius: 18px;
   background: linear-gradient(150deg, #0d0d0d, #b8b5ae 45%, #e9e6e0 60%, #3a3a3a); }
-.id-photo::before { content: ""; position: absolute; inset: -18px; z-index: -1; border-radius: 40px;
-  background: radial-gradient(closest-side, rgba(13,13,13,.14), transparent); filter: blur(6px); }
+.id-photo::before { content: ""; position: absolute; inset: -22px; z-index: -1;
+  background: radial-gradient(closest-side, rgba(13,13,13,.13), rgba(13,13,13,0)); }
 .id-photo-in { width: 100%; height: 100%; border-radius: 15px; overflow: hidden; background: var(--soft); }
 .id-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.04);
   transition: transform .9s var(--ease), filter .9s var(--ease); }
 .idcard:hover .id-photo img, .idcard:focus-visible .id-photo img { transform: scale(1.08); filter: grayscale(.15); }
-.id-name { margin-top: 12px; font-weight: 700; font-size: 21px; letter-spacing: -0.03em; }
+.id-name { margin-top: 10px; font-weight: 700; font-size: 20px; letter-spacing: -0.03em; }
 .id-role { font-size: 12.5px; color: var(--mute); margin-top: 2px; }
-.id-rows { width: 100%; margin-top: 10px; display: grid; gap: 0; font-size: 11.5px; }
-.id-rows div { display: flex; justify-content: space-between; padding: 5px 0; border-top: 1px dashed var(--line); }
+.id-rows { width: 100%; margin-top: 8px; display: grid; gap: 0; font-size: 11.5px; }
+.id-rows div { display: flex; justify-content: space-between; align-items: baseline; padding: 4px 0; border-top: 1px dashed var(--line); }
 .id-rows dt { font-family: var(--font-mono); color: var(--mute); text-transform: uppercase; letter-spacing: .06em; font-size: 10px; }
 .id-rows dd { font-weight: 600; }
 .id-foot { margin-top: auto; width: 100%; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding-top: 8px; }
-.barcode { height: 30px; flex: 1; display: flex; align-items: stretch; gap: 1.5px; }
-.barcode i { background: var(--ink); }
-.holo { width: 38px; height: 38px; border-radius: 99px; flex: none; position: relative; overflow: hidden;
+.barcode { height: 26px; flex: 1; }
+.holo { width: 34px; height: 34px; border-radius: 99px; flex: none; position: relative; overflow: hidden;
   background: conic-gradient(from 0deg, #d4d4d4, #fafafa, #9a9a9a, #ececec, #bdbdbd, #f5f5f5, #d4d4d4);
   box-shadow: inset 0 0 0 1px rgba(13,13,13,.12); animation: holo-spin 9s linear infinite; }
 .holo::after { content: "HG"; position: absolute; inset: 0; display: grid; place-items: center; font: 700 10px/1 var(--font-sans);
@@ -87,7 +86,7 @@ const css = `
   transform: rotate(-4deg); transform-origin: 0 100%; display: inline-block; }
 .sig-line { height: 1px; background: var(--ink); margin-top: 4px; opacity: .6; }
 .sig small { display: block; margin-top: 8px; font-size: 11px; color: var(--mute); overflow-wrap: anywhere; }
-.flip-hint { margin-top: 18px; font: 500 11px/1 var(--font-mono); letter-spacing: .06em; color: var(--faint); text-transform: uppercase;
+.flip-hint { margin-top: 18px; font: 500 11px/1 var(--font-mono); letter-spacing: .06em; color: var(--mute); text-transform: uppercase;
   position: absolute; bottom: 0; }
 
 /* ------------------------------------------------------- facts */
@@ -102,7 +101,7 @@ const css = `
 .facts a:hover { text-decoration-color: var(--ink); }
 .quote { margin: auto 0 0; padding: 26px 26px 22px; border-radius: 24px; background: var(--card); box-shadow: var(--hair); position: relative; }
 .quote p { font-family: var(--font-serif); font-style: italic; font-size: clamp(22px, 2vw, 28px); line-height: 1.15; letter-spacing: -0.01em; }
-.quote::before { content: "\\201C"; position: absolute; top: -18px; left: 20px; font: 400 64px/1 var(--font-serif); color: var(--faint); }
+.quote::before { content: "\\201C"; position: absolute; top: -18px; left: 20px; font: italic 400 64px/1 var(--font-serif); color: var(--faint); }
 .quote figcaption { margin-top: 12px; font: 500 11px/1.4 var(--font-mono); letter-spacing: .04em; color: var(--mute); text-transform: uppercase; }
 
 @media (max-width: 1099px) {
@@ -120,14 +119,16 @@ const css = `
 }
 `;
 
-/** deterministic barcode from the name */
-function bars(seed: string) {
-  const out: number[] = [];
+/** deterministic barcode from the name, drawn as one hard-stop gradient */
+function barcode(seed: string) {
+  const stops: string[] = [];
+  let x = 0;
   for (let i = 0; i < 46; i++) {
-    const c = seed.charCodeAt(i % seed.length);
-    out.push(((c * (i + 7)) % 3) + 1);
+    const w = ((seed.charCodeAt(i % seed.length) * (i + 7)) % 3) + 1;
+    stops.push(`#0d0d0d ${x}px ${x + w}px, transparent ${x + w}px ${x + w + 1.5}px`);
+    x += w + 1.5;
   }
-  return out;
+  return `linear-gradient(90deg, ${stops.join(", ")}, transparent ${x}px)`;
 }
 
 export default function About() {
@@ -159,7 +160,7 @@ export default function About() {
       const alpha = -k * (theta - target) - c * omega;
       omega += alpha * dt;
       theta += omega * dt;
-      theta = Math.max(-16, Math.min(16, theta));
+      theta = Math.max(-10, Math.min(10, theta));
       swing.style.transform = `rotate(${theta.toFixed(3)}deg)`;
       if (running) raf = requestAnimationFrame(step);
     };
@@ -302,15 +303,11 @@ export default function About() {
                       </div>
                       <div>
                         <dt>Valid till</dt>
-                        <dd className="mono">{mba.end}</dd>
+                        <dd className="mono">{PROFILE.idValidTill}</dd>
                       </div>
                     </dl>
                     <div className="id-foot" aria-hidden="true">
-                      <div className="barcode">
-                        {bars(PROFILE.name + PROFILE.email).map((w, i) => (
-                          <i key={i} style={{ width: w }} />
-                        ))}
-                      </div>
+                      <div className="barcode" style={{ backgroundImage: barcode(PROFILE.name + PROFILE.email) }} />
                       <span className="holo" />
                     </div>
                   </div>
@@ -326,7 +323,7 @@ export default function About() {
                     <h3>What I am</h3>
                     <ul>
                       <li>
-                        <b>{PROFILE.role}</b>, around 4.8 years
+                        <b>{PROFILE.role}</b>, {PROFILE.experienceYears} years
                       </li>
                       <li>
                         {btech.short}, {btech.score} · {mba.short}, {mba.score}

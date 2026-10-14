@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 import { EXPERIENCE, PROJECTS, SKILL_GROUPS, type Family, type Skill } from "@/lib/data";
@@ -30,7 +30,7 @@ const css = `
 .pt-num { font: 500 10px/1 var(--font-mono); color: var(--mute); }
 .pt-sym { margin-top: auto; font-weight: 700; font-size: clamp(22px, 2.3vw, 32px); letter-spacing: -0.04em; line-height: 1; }
 .pt-name { margin-top: 6px; font-size: 11.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pt-fam { font: 500 9.5px/1.2 var(--font-mono); color: var(--faint); text-transform: uppercase; letter-spacing: .04em; margin-top: 3px;
+.pt-fam { font: 500 9.5px/1.2 var(--font-mono); color: var(--mute); text-transform: uppercase; letter-spacing: .04em; margin-top: 3px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pt-dot { position: absolute; top: 10px; right: 10px; width: 6px; height: 6px; border-radius: 99px; }
 .pt-dot[data-f="Frontend"] { background: currentColor; }
@@ -47,8 +47,8 @@ const css = `
 .pt-insp-top { display: flex; justify-content: space-between; font: 500 11px/1 var(--font-mono); color: var(--mute);
   text-transform: uppercase; letter-spacing: .06em; }
 .pt-logo { position: relative; height: 190px; display: grid; place-items: center; margin: 8px 0 4px; }
-.pt-logo::before { content: ""; position: absolute; width: 170px; height: 170px; border-radius: 99px; background: var(--tint, #999);
-  opacity: .16; filter: blur(34px); }
+.pt-logo::before { content: ""; position: absolute; width: 240px; height: 240px;
+  background: radial-gradient(closest-side, var(--tint, #999), transparent); opacity: .2; }
 .pt-logo > * { position: relative; animation: pt-pop .7s var(--ease) both; }
 .pt-logo svg { color: var(--ink); }
 @keyframes pt-pop { 0% { opacity: 0; transform: scale(.6) rotate(-8deg); } 60% { opacity: 1; transform: scale(1.06) rotate(1deg); } 100% { transform: none; } }
@@ -105,7 +105,7 @@ export default function Skills() {
           accent="of my stack."
         >
           <p className="lede rv mt-6 max-w-[56ch]" style={{ "--i": 2 } as React.CSSProperties}>
-            Every skill listed on my résumé, as an element. Hover or focus a tile to inspect it; filter by family.
+            Every skill listed on my rÃ©sumÃ©, as an element. Hover or focus a tile to inspect it; filter by family.
           </p>
         </SectionHead>
 
@@ -204,7 +204,7 @@ export default function Skills() {
                   ))}
                 </ul>
               ) : (
-                <p>Listed under {current.family} in my résumé skills.</p>
+                <p>Listed under {current.family} in my rÃ©sumÃ© skills.</p>
               )}
             </div>
           </aside>

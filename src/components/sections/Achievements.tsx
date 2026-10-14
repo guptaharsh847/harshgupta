@@ -23,9 +23,9 @@ const css = `
 .ach-top { display: flex; justify-content: space-between; align-items: flex-start; }
 .ach-logo { position: relative; width: 72px; height: 72px; border-radius: 20px; background: var(--card); box-shadow: var(--hair);
   display: grid; place-items: center; isolation: isolate; }
-.ach-logo::before { content: ""; position: absolute; inset: -6px; z-index: -1; border-radius: 30px; background: var(--tint);
-  opacity: .14; filter: blur(16px); transition: opacity .8s var(--ease); }
-.ach-card.is-near .ach-logo::before { opacity: .34; }
+.ach-logo::before { content: ""; position: absolute; inset: -26px; z-index: -1;
+  background: radial-gradient(closest-side, var(--tint), transparent); opacity: .2; transition: opacity .8s var(--ease); }
+.ach-card.is-near .ach-logo::before { opacity: .42; }
 .ach-logo svg { color: var(--ink); }
 .ach-idx { font: 500 12px/1 var(--font-mono); color: var(--mute); }
 .ach-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
@@ -141,7 +141,7 @@ export default function Achievements() {
           requestAnimationFrame(step);
         }
       },
-      { threshold: 0.5 },
+      { threshold: 0.3 },
     );
     track.querySelectorAll(".ach-card").forEach((c) => io.observe(c));
     return () => io.disconnect();
@@ -190,7 +190,8 @@ export default function Achievements() {
                     <p className="ach-caption">{a.caption}</p>
                     <p className="ach-detail">{a.detail}</p>
                   </div>
-                  <p className="ach-num" aria-label={`${format(a, a.value)}${a.suffix ? ` ${a.suffix}` : ""}`}>
+                  <p className="ach-num">
+                    <span className="sr-only">{`${format(a, a.value)}${a.suffix ? ` ${a.suffix.replace("+ ", "+ ")}` : ""}`}</span>
                     <span data-count={i} aria-hidden="true">
                       {format(a, 0)}
                     </span>

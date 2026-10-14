@@ -9,7 +9,7 @@
   --color-card: #ffffff;
   --color-ink: #0d0d0d;
   --color-ink-2: #3a3a3a;
-  --color-mute: #77756f;
+  --color-mute: #6c6a64;
   --color-faint: #a9a6a0;
   --color-soft: #e9e6e0;
   --color-line: rgba(13, 13, 13, 0.1);
@@ -20,7 +20,7 @@
   --card: #ffffff;
   --ink: #0d0d0d;
   --ink-2: #3a3a3a;
-  --mute: #77756f;
+  --mute: #6c6a64; /* spec #77756f darkened for WCAG AA (4.9:1 on paper) */
   --faint: #a9a6a0;
   --line: rgba(13, 13, 13, 0.1);
   --soft: #e9e6e0;

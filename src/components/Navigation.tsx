@@ -44,7 +44,7 @@ const css = `
 .nav-menu-btn[aria-expanded="true"] i::before { transform: translateY(2.75px) rotate(45deg); }
 .nav-menu-btn[aria-expanded="true"] i::after { transform: translateY(-2.75px) rotate(-45deg); }
 
-.nav-overlay { position: fixed; inset: 0; z-index: 55; background: var(--paper); pointer-events: auto;
+.nav-overlay { position: fixed; inset: 0; z-index: 49; background: var(--paper); pointer-events: auto;
   clip-path: circle(0% at calc(100% - 52px) 40px); visibility: hidden;
   transition: clip-path .8s var(--ease), visibility 0s linear .8s; display: flex; flex-direction: column;
   padding: 96px var(--gutter) 32px; }

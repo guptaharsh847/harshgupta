@@ -1,28 +1,35 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { preload } from "react-dom";
 import { PROFILE } from "@/lib/data";
 import { prefersReducedMotion } from "@/lib/hooks";
 import { scrollToTarget } from "@/lib/scroll";
 
 const css = `
 @layer components {
-.hero { position: relative; min-height: 100svh; overflow: clip; isolation: isolate; }
+.hero { position: relative; min-height: 100svh; overflow: clip; isolation: isolate; background: var(--paper); }
 .hero-stage { position: relative; height: 100svh; min-height: 620px; max-height: 1120px; }
 
-.hero-ghost { position: absolute; left: 50%; top: 46%; z-index: 0; transform: translate(-50%, -50%);
+/* the ghost word is masked out of the central column so the person reads as standing in front of it */
+.hero-ghost-mask { position: absolute; inset: 0; z-index: 0; pointer-events: none; --hole: calc(min(96svh, 1040px) * .15);
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(50% - var(--hole) - 40px), transparent calc(50% - var(--hole)), transparent calc(50% + var(--hole)), #000 calc(50% + var(--hole) + 40px));
+  mask-image: linear-gradient(90deg, #000 calc(50% - var(--hole) - 40px), transparent calc(50% - var(--hole)), transparent calc(50% + var(--hole)), #000 calc(50% + var(--hole) + 40px)); }
+.hero-ghost { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%);
   display: flex; font-weight: 800; font-size: clamp(120px, 27vw, 460px); line-height: .8; letter-spacing: -0.06em;
   color: transparent; -webkit-text-stroke: 1.5px rgba(13,13,13,.16); white-space: nowrap; user-select: none; pointer-events: none; }
 .hero-ghost span { display: inline-block; animation: ghost-in 1.6s var(--ease) both; animation-delay: calc(var(--i) * 70ms + 150ms); }
 @keyframes ghost-in { from { opacity: 0; transform: translateY(18%); } to { opacity: 1; transform: none; } }
 
 .hero-video-wrap { position: absolute; left: 50%; bottom: 0; z-index: 1; transform: translateX(-50%);
-  height: min(96svh, 1040px); aspect-ratio: 768 / 960; max-width: 100%;
+  height: min(96svh, 1040px); aspect-ratio: 768 / 960; max-width: 100%; mix-blend-mode: multiply;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
   animation: hero-rise 1.6s var(--ease) both .1s; }
-@keyframes hero-rise { from { opacity: 0; transform: translate(-50%, 4%); } to { opacity: 1; transform: translate(-50%, 0); } }
-.hero-video { width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; mix-blend-mode: multiply; }
+@keyframes hero-rise { from { transform: translate(-50%, 3%); } to { transform: translate(-50%, 0); } }
+.hero-video { width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
 
-.hero-copy { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(28px, 7vh, 72px); pointer-events: none;
+.hero-copy { position: absolute; z-index: 2; left: var(--gutter); right: var(--gutter); bottom: clamp(28px, 7vh, 72px); pointer-events: none;
   display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
 .hero-copy > * { pointer-events: auto; }
 .hero-title { max-width: 30%; }
@@ -54,11 +61,12 @@ const css = `
 
 @media (max-width: 899px) {
   .hero-stage { height: auto; max-height: none; min-height: 0; display: flex; flex-direction: column; padding-top: 76px; }
-  .hero-ghost { top: 28svh; font-size: 31vw; }
+  .hero-ghost-mask { --hole: calc(62svh * .14); }
+  .hero-ghost { top: calc(76px + 28svh); font-size: 31vw; }
   .hero-video-wrap { position: relative; left: auto; transform: none; margin-inline: auto; height: 62svh; min-height: 380px;
     animation-name: hero-rise-m; }
-  @keyframes hero-rise-m { from { opacity: 0; transform: translateY(4%); } to { opacity: 1; transform: none; } }
-  .hero-copy { position: relative; bottom: auto; flex-direction: column; align-items: stretch; gap: 22px;
+  @keyframes hero-rise-m { from { transform: translateY(3%); } to { transform: none; } }
+  .hero-copy { position: relative; left: auto; right: auto; bottom: auto; flex-direction: column; align-items: stretch; gap: 22px;
     padding-top: 26px; padding-bottom: 56px; border-top: 1px solid var(--line); }
   .hero-title, .hero-side { max-width: none; }
   .hero-title h1 { font-size: clamp(40px, 11.5vw, 64px); }
@@ -87,6 +95,7 @@ function PauseIcon() {
 }
 
 export default function Hero() {
+  preload("/hero/poster.webp", { as: "image", fetchPriority: "high" });
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const soundBtnRef = useRef<HTMLButtonElement>(null);
@@ -176,12 +185,14 @@ export default function Hero() {
     <section id="top" ref={sectionRef} className="hero" aria-labelledby="hero-title">
       <style dangerouslySetInnerHTML={{ __html: css }} />
       <div className="hero-stage wrap">
-        <div className="hero-ghost" aria-hidden="true">
-          {ghost.map((c, i) => (
-            <span key={i} style={{ "--i": i } as React.CSSProperties}>
-              {c}
-            </span>
-          ))}
+        <div className="hero-ghost-mask" aria-hidden="true">
+          <div className="hero-ghost">
+            {ghost.map((c, i) => (
+              <span key={i} style={{ "--i": i } as React.CSSProperties}>
+                {c}
+              </span>
+            ))}
+          </div>
         </div>
 
         <div className="hero-video-wrap">
@@ -226,7 +237,7 @@ export default function Hero() {
           </div>
           <div className="hero-side">
             <p className="hero-in" style={{ "--i": 2 } as React.CSSProperties}>
-              Around 4.8 years of developing and maintaining web applications using React.js, Node.js, Express.js, and
+              {PROFILE.experienceYears} years of developing and maintaining web applications using React.js, Node.js, Express.js, and
               MongoDB.
             </p>
             <div className="hero-ctas hero-in" style={{ "--i": 3 } as React.CSSProperties}>

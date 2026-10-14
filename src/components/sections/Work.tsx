@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PROJECTS, type Project } from "@/lib/data";
 import SectionHead from "@/components/ui/SectionHead";
 import TechLogo from "@/components/ui/TechLogo";
@@ -73,6 +73,11 @@ const css = `
 
 function Panel({ p, open, onOpen }: { p: Project; open: boolean; onOpen: () => void }) {
   const bodyId = `wk-body-${p.id}`;
+  // mount the illustration the first time the panel opens (keeps the initial DOM small)
+  const [seen, setSeen] = useState(open);
+  useEffect(() => {
+    if (open) setSeen(true);
+  }, [open]);
   return (
     <article className={`wk-panel${open ? " is-open" : ""}`} onMouseEnter={onOpen} aria-labelledby={`wk-t-${p.id}`}>
       <h3 className="m-0">
@@ -124,7 +129,7 @@ function Panel({ p, open, onOpen }: { p: Project; open: boolean; onOpen: () => v
           </div>
           <div className="wk-visual">
             <span className="wk-visual-label">Illustrative UI</span>
-            <MiniUI kind={p.ui} />
+            {seen && <MiniUI kind={p.ui} />}
             <span className="sr-only">Illustrative mock-up of the {p.title} interface; not a screenshot.</span>
           </div>
         </div>

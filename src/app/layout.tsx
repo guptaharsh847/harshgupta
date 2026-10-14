@@ -11,10 +11,8 @@ const interTight = localFont({
 });
 
 const instrumentSerif = localFont({
-  src: [
-    { path: "../fonts/InstrumentSerif-Regular.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/InstrumentSerif-Italic.woff2", weight: "400", style: "italic" },
-  ],
+  // only the italic is used (one accent word per heading); the regular cut ships in src/fonts for completeness
+  src: [{ path: "../fonts/InstrumentSerif-Italic.woff2", weight: "400", style: "italic" }],
   variable: "--font-instrument-serif",
   display: "swap",
 });

@@ -25,7 +25,11 @@ export const PROFILE = {
   /** Not stated as a personal location; this is where the current role (Nexsys IT) is based. */
   location: "Bengaluru",
   resumeSummary:
-    "Full Stack Developer with around 4.8 years of experience in developing and maintaining web applications using React.js, Node.js, Express.js, and MongoDB. Proficient in building RESTful APIs, handling database operations, and implementing user authentication. Experienced in integrating third-party services, improving application performance, and ensuring cross-browser compatibility. Focused on writing clean, maintainable code and delivering reliable, production-ready solutions.",
+    "Full Stack Developer with 5.1+ years of experience in developing and maintaining web applications using React.js, Node.js, Express.js, and MongoDB. Proficient in building RESTful APIs, handling database operations, and implementing user authentication. Experienced in integrating third-party services, improving application performance, and ensuring cross-browser compatibility. Focused on writing clean, maintainable code and delivering reliable, production-ready solutions.",
+  /** owner-confirmed update (résumé PDF says "around 4.8 years") */
+  experienceYears: "5.1+",
+  /** owner-chosen "Valid till" year for the ID card */
+  idValidTill: "2027",
   currentRole: "Senior Software Developer",
   currentCompany: "Nexsys IT",
   github: null as string | null, // not in the résumé
@@ -356,9 +360,9 @@ export type Achievement = {
 export const ACHIEVEMENTS: Achievement[] = [
   {
     label: "Experience",
-    value: 4.8,
+    value: 5.1,
     decimals: 1,
-    suffix: "yrs",
+    suffix: "+ yrs",
     caption: "Building web applications",
     detail: "React.js · Node.js · Express.js · MongoDB",
     logo: "briefcase",
